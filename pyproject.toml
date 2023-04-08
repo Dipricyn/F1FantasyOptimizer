@@ -49,3 +49,104 @@ dev = {file = ["dev-requirements.txt"]}
 where = ["."]
 include = ["f1fantasyoptimizer*"]
 exclude = ["*tests*"]
+
+[tool.coverage.run]
+branch = true
+# Append machine name, process id, and random number to data file name so coverage can be
+# run in parallel environments, e.g. in tox.
+parallel = true
+source = [
+    "f1fantasyoptimizer/"
+]
+omit = [
+    ".venv/",
+    "tests/",
+]
+disable_warnings = ["no-data-collected"]
+
+[tool.coverage.html]
+directory = "logs/coverage/html"
+
+[tool.coverage.json]
+output = "logs/coverage/coverage.json"
+
+[tool.coverage.xml]
+output = "logs/coverage/coverage.xml"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    '@(abc\.)?abstractmethod',
+]
+
+[tool.coverage.paths]
+source = [
+    "f1fantasyoptimizer/",
+    "*/site-packages/",
+]
+others = [
+    "f1fantasyoptimizer/",
+    "*/f1fantasyoptimizer",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.25.0
+envlist = py{310},coverage
+isolated_build = true
+
+[gh-actions]
+python =
+    3.10: py310
+
+[testenv]
+allowlist_externals =
+    pytest
+setenv =
+    # See: https://github.com/tox-dev/tox/issues/1550
+    PYTHONIOENCODING=utf-8
+    COVERAGE_FILE=tox-.coverage.{envname}
+commands =
+    python -m coverage run -p -m pytest
+
+# Not run by default. To run, use `tox -e test_scraper`
+[testenv:test_scraper]
+allowlist_externals =
+    sh
+deps =
+    pytest
+    tox
+setenv =
+    # See: https://github.com/tox-dev/tox/issues/1550
+    PYTHONIOENCODING=utf-8
+commands =
+    python -m pytest f1fantasyoptimizer/tests/test_scraper.py
+
+# Not run by default. To run, use `tox -e coverage`
+[testenv:coverage]
+depends = py{310}
+allowlist_externals =
+    sh
+deps =
+    coverage
+    tox
+basepython = python3.10
+setenv =
+    COVERAGE_FILE=tox-.coverage
+    COVERAGE_DEBUG=trace
+    COVERAGE_DEBUG_FILE=stdout
+commands =
+    coverage debug data
+    coverage combine --debug=pathmap
+    coverage report -m --skip-covered
+    coverage html
+    coverage json
+    sh -c 'mv -f tox-.coverage .coverage'
+    sh -c 'rm -f tox-.coverage'
+parallel_show_output = true
+"""

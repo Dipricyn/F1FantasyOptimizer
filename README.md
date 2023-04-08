@@ -1,8 +1,12 @@
 # F1FantasyOptimizer
+Find the best team to pick in F1 Fantasy.
+
+[![Tests](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/Tests/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/tests.yml) 
+[![Scraper](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/Scraper/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/test_scraper.yml) 
+![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Dipricyn/34c160c16ac568a64c1cae0afddfc531/raw/covbadge.json)
 
 ![GUI0](res/gui0.png?raw=true "GUI")
 
-Find the best team to pick in F1 Fantasy.
 
 ## Installation
 Install Python 3.10 or later as well as `pip`.

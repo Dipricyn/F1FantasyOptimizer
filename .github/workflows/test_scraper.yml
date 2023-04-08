@@ -1,0 +1,39 @@
+# Run tests
+
+name: "Scraper"
+
+on:
+  schedule:
+    # Run at 06:00 on Friday
+    - cron: '0 6 * * 5'
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test_scraper:
+    name: Test Scraper
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+
+      - name: "Set up Python"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "${{ matrix.python-version }}"
+
+      - name: "Install dependencies"
+        run: |
+          python -m pip install tox tox-gh-actions pytest-github-actions-annotate-failures
+
+      - name: "Test Scraper"
+        # Run a test to check whether the scraper is still compatible with the website
+        run: |
+          python -m tox -e test_scraper
