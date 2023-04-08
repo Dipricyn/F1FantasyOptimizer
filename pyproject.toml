@@ -24,7 +24,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Intended Audience :: End Users/Desktop",
 ]
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "optional-dependencies"]
 
 [project.scripts]
 f1fantasyoptimizer = "f1fantasyoptimizer.__main__:main"
@@ -39,9 +39,13 @@ f1fantasyoptimizer-gui = "f1fantasyoptimizer.ui.gui:main"
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
+[tool.setuptools.dynamic.optional-dependencies]
+dev = {file = ["dev-requirements.txt"]}
+
 [tool.setuptools.package-data]
-"*" = ["res/*.ico"]
+"*" = ["res/*.png"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["f1fantasyoptimizer*"]
+exclude = ["*tests*"]
