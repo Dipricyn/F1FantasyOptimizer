@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "f1fantasyoptimizer"
+version = "1.0.0"
+authors = [
+  { name="Dipricyn", email="5783337+Dipricyn@users.noreply.github.com" },
+]
+description = "Find the best team to pick in F1 Fantasy."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "scraper",
+    "scraping",
+    "gui",
+    "constraint-programming",
+    "f1-fantasy",
+    "fantasy-f1",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: End Users/Desktop",
+]
+dynamic = ["dependencies"]
+
+[project.scripts]
+f1fantasyoptimizer = "f1fantasyoptimizer.__main__:main"
+
+[project.gui-scripts]
+f1fantasyoptimizer-gui = "f1fantasyoptimizer.ui.gui:main"
+
+[project.urls]
+"Homepage" = "https://github.com/Dipricyn/F1FantasyOptimizer"
+"Bug Tracker" = "https://github.com/Dipricyn/F1FantasyOptimizer/issues"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+"*" = ["res/*.ico"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["f1fantasyoptimizer*"]
