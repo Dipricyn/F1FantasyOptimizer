@@ -1,17 +1,15 @@
 # F1FantasyOptimizer
 Find the best team to pick in F1 Fantasy.
 
-[![Tests](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/Tests/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/tests.yml) 
-[![Scraper](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/Scraper/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/test_scraper.yml) 
-![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Dipricyn/34c160c16ac568a64c1cae0afddfc531/raw/covbadge.json)
+[![Tests](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/test.yml/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/test.yml) 
+[![Scraper](https://github.com/Dipricyn/f1fantasyoptimizer/actions/workflows/test_scraper.yml/badge.svg)](https://github.com/Dipricyn/F1FantasyOptimizer/actions/workflows/test_scraper.yml) 
+[![codecov](https://codecov.io/gh/Dipricyn/f1fantasyoptimizer/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Dipricyn/F1FantasyOptimizer/tree/master)
 
 ![GUI0](res/gui0.png?raw=true "GUI")
 
 
 ## Installation
 Install Python 3.10 or later as well as `pip`.
-
-Run `pip install build virtualenv` to install the build dependencies.
 
 > **_Note:_** If you want to use the GUI, ensure that the `python` installation contains `tkinter`.
 

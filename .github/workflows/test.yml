@@ -12,10 +12,14 @@ defaults:
   run:
     shell: bash
 
+env:
+  ALLOW_PLOTTING: true
+  SHELLOPTS: "errexit:pipefail"
+
 jobs:
-  tests:
+  test:
     name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
-    runs-on: "${{ matrix.os }}"
+    runs-on: "${{ matrix.image }}"
 
     strategy:
       matrix:
@@ -31,10 +35,10 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: "Check out the repo"
+      - name: "Check out the Repository"
         uses: "actions/checkout@v3"
 
-      - name: "Set up Python"
+      - name: "Install `python` ${{ matrix.python-version }}"
         uses: "actions/setup-python@v4"
         with:
           python-version: "${{ matrix.python-version }}"
@@ -47,7 +51,7 @@ jobs:
         run: |
           python -m tox -e ${{ matrix.tox-env }}
 
-      - name: "Upload coverage data"
+      - name: "Upload coverage data artifact"
         uses: actions/upload-artifact@v3
         with:
           name: coverage_data
@@ -55,44 +59,37 @@ jobs:
 
   coverage:
     name: Coverage
-    needs: tests
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the Repository
+      - name: "Check out the Repository"
         uses: actions/checkout@v3
 
-      - name: Install `python` ${{ matrix.python-version }}
+      - name: "Install `python` ${{ matrix.python-version }}"
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - name: Install Dependencies
+      - name: "Install Dependencies"
         run: |
           python -m pip install --upgrade pip
           python -m pip install tox coverage
           python -m pip install pytest-github-actions-annotate-failures
 
-      - name: Download Coverage Artifacts
+      - name: "Download Coverage Artifacts"
         uses: actions/download-artifact@v3
         with:
           name: coverage_data
 
-      - name: Combine Coverage Results
+      - name: "Combine Coverage Results"
         run: |
           python -m tox -e coverage
-          export TOTAL=$(python -c "import json;print(json.load(open('logs/coverage/coverage.json'))['totals']['percent_covered_display'])")
-          echo "total_coverage=$TOTAL" >> $GITHUB_ENV
-          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
-      - name: "Make badge"
-        uses: schneegans/dynamic-badges-action@v1.6.0
+      - name: "Upload coverage data to codecov.io"
+        uses: codecov/codecov-action@v3
         with:
-          # GIST_TOKEN is a GitHub personal access token with scope "gist".
-          auth: ${{ secrets.GIST_TOKEN }}
-          gistID: 34c160c16ac568a64c1cae0afddfc531
-          filename: covbadge.json
-          label: Coverage
-          message: ${{ env.total }}%
-          minColorRange: 50
-          maxColorRange: 90
-          valColorRange: ${{ env.total }}
+          files: ./logs/coverage/coverage.json
+          flags: unittests
+          name: codecov-f1fantasyoptimizer
+          fail_ci_if_error: true
+          verbose: true

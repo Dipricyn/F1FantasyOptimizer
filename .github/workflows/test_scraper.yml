@@ -1,4 +1,4 @@
-# Run tests
+# Test whether the scraper is still compatible with the website
 
 name: "Scraper"
 
@@ -19,6 +19,11 @@ jobs:
   test_scraper:
     name: Test Scraper
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [ "3.10" ]
+      fail-fast: false
 
     steps:
       - name: "Check out the repo"

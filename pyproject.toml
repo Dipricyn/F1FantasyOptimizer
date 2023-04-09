@@ -40,7 +40,7 @@ f1fantasyoptimizer-gui = "f1fantasyoptimizer.ui.gui:main"
 dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.dynamic.optional-dependencies]
-dev = {file = ["dev-requirements.txt"]}
+test = {file = ["requirements.test.txt"]}
 
 [tool.setuptools.package-data]
 "*" = ["res/*.png"]
@@ -96,7 +96,6 @@ others = [
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-minversion = 3.25.0
 envlist = py{310},coverage
 isolated_build = true
 
@@ -105,8 +104,7 @@ python =
     3.10: py310
 
 [testenv]
-allowlist_externals =
-    pytest
+deps = -r./requirements.test.txt
 setenv =
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
@@ -118,9 +116,7 @@ commands =
 [testenv:test_scraper]
 allowlist_externals =
     sh
-deps =
-    pytest
-    tox
+deps = -r./requirements.test.txt
 setenv =
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
@@ -132,9 +128,7 @@ commands =
 depends = py{310}
 allowlist_externals =
     sh
-deps =
-    coverage
-    tox
+deps = -r./requirements.test.txt
 basepython = python3.10
 setenv =
     COVERAGE_FILE=tox-.coverage
