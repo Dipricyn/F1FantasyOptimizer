@@ -59,8 +59,8 @@ source = [
     "f1fantasyoptimizer/"
 ]
 omit = [
-    ".venv/",
-    "tests/",
+    ".venv/*",
+    "*/tests/*",
 ]
 disable_warnings = ["no-data-collected"]
 
