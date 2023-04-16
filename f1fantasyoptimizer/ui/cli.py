@@ -4,8 +4,8 @@ import f1fantasyoptimizer.simulator as simulator
 import f1fantasyoptimizer.solver as solver
 
 # Select event for which to download event data
-EVENT_DATA_YEAR: int = 2023
-EVENT_DATA_PLACE: str = "Bahrain"
+SEASON: data.Season = 2023
+VENUE_NAME: data.Venue.Name = "Bahrain"
 
 # Select a team which should also be evaluated
 YOUR_TEAM = (["Max Verstappen", "Fernando Alonso", "Sergio Perez", "Lance Stroll", "Zhou Guanyu",
@@ -31,12 +31,12 @@ def print_pick_data(pick_data: data.PickData):
 
 
 def main():
-    events = data.download_events(EVENT_DATA_YEAR)
+    venues = data.download_venues(SEASON)
     pick_data = data.download_pick_data()
 
     if MODE:
         data.reset_points(pick_data)
-        event_data = data.download_event_data(events, place=EVENT_DATA_PLACE, year=EVENT_DATA_YEAR, modes=[MODE])
+        event_data = data.download_event_data(venue_id=venues[VENUE_NAME], season=SEASON, modes=[MODE])
         simulator.simulate(pick_data, event_data[MODE])
         print_pick_data(pick_data)
 

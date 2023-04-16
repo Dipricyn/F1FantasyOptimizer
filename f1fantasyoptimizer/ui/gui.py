@@ -216,22 +216,22 @@ class MainWindow(tk.Frame):
 
         self.options_frame = tk.Frame(self, bg=self["bg"])
 
-        self.event_year = tk.IntVar(self)
-        self.event_place = tk.StringVar(self)
+        self.event_season = tk.IntVar(self)
+        self.event_venue = tk.StringVar(self)
         self.event_mode = tk.StringVar(self)
 
-        years = data.download_events_years()
-        self.event_year.set(years[0])
-        self.yom = tk.OptionMenu(self.options_frame, self.event_year, *years)
-        self.event_year.trace("w", lambda name, index, mode: self.update())
+        years = data.download_seasons()
+        self.event_season.set(years[0])
+        self.yom = tk.OptionMenu(self.options_frame, self.event_season, *years)
+        self.event_season.trace("w", lambda name, index, mode: self.update())
         self.yom.config(bg=optionmenu_bg, highlightbackground=optionmenu_highlightbackground,
                         activebackground=optionmenu_bg_active)
         self.yom["menu"].config(bg=optionmenu_bg)
 
-        events = data.download_events(self.event_year.get())
-        self.event_place.set(next(iter(events)))
-        self.pom = tk.OptionMenu(self.options_frame, self.event_place, *events.keys())
-        self.event_place.trace("w", lambda name, index, mode: self.update())
+        events = data.download_venues(self.event_season.get())
+        self.event_venue.set(next(iter(events)))
+        self.pom = tk.OptionMenu(self.options_frame, self.event_venue, *events.keys())
+        self.event_venue.trace("w", lambda name, index, mode: self.update())
         self.pom.config(bg=optionmenu_bg, highlightbackground=optionmenu_highlightbackground,
                         activebackground=optionmenu_bg_active)
         self.pom["menu"].config(bg=optionmenu_bg)
@@ -261,18 +261,17 @@ class MainWindow(tk.Frame):
         self.update()
 
     def update(self):
-        year = self.event_year.get()
-        place = self.event_place.get()
-        events = data.download_events(year)
+        season = self.event_season.get()
+        venue_id = data.download_venues(season)[self.event_venue.get()]
         pick_data = data.download_pick_data()
-        modes = {FANTASY_MODE[0]: FANTASY_MODE[1], **data.download_event_modes(events, place=place, year=year)}
+        modes = {FANTASY_MODE[0]: FANTASY_MODE[1], **data.download_event_modes(venue_id=venue_id, season=season)}
         self.mom["menu"].delete("0", tk.END)
         for mode in modes.keys():
             self.mom["menu"].add_command(label=mode, command=tk._setit(self.event_mode, mode))
         mode = modes[self.event_mode.get()]
         if mode:
             data.reset_points(pick_data)
-            event_data = data.download_event_data(events, place=place, year=year,
+            event_data = data.download_event_data(venue_id=venue_id, season=season,
                                                   modes=[mode])
             simulator.simulate(pick_data, event_data[mode])
             cli.print_pick_data(pick_data)

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "f1fantasyoptimizer"
 version = "1.0.0"
 authors = [
-  { name="Dipricyn", email="5783337+Dipricyn@users.noreply.github.com" },
+    { name = "Dipricyn", email = "5783337+Dipricyn@users.noreply.github.com" },
 ]
 description = "Find the best team to pick in F1 Fantasy."
 readme = "README.md"
@@ -37,10 +37,10 @@ f1fantasyoptimizer-gui = "f1fantasyoptimizer.ui.gui:main"
 "Bug Tracker" = "https://github.com/Dipricyn/F1FantasyOptimizer/issues"
 
 [tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = { file = ["requirements.txt"] }
 
 [tool.setuptools.dynamic.optional-dependencies]
-test = {file = ["requirements.test.txt"]}
+test = { file = ["requirements.test.txt"] }
 
 [tool.setuptools.package-data]
 "*" = ["res/*.png"]

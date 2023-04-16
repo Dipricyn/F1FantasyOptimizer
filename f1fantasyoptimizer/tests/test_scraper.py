@@ -6,17 +6,17 @@ def test_f1_website():
     pick_data = data.download_pick_data()
     assert len(pick_data)
 
-    years = data.download_events_years()
-    assert len(years)
+    seasons = data.download_seasons()
+    assert len(seasons)
 
-    year = max(years)  # get most recent year
-    events = data.download_events(year)
-    assert len(events)
+    season = max(seasons)  # get most recent year
+    venues = data.download_venues(season)
+    assert len(venues)
 
-    place = next(iter(events))
-    event_modes = data.download_event_modes(events, place=place, year=year)
+    venue_id = next(iter(venues.values()))
+    event_modes = data.download_event_modes(venue_id=venue_id, season=season)
     assert len(event_modes)
 
     modes = list(event_modes.values())
-    event_data = data.download_event_data(events, place=place, year=year, modes=modes)
+    event_data = data.download_event_data(venue_id=venue_id, season=season, modes=modes)
     assert len(event_data)
